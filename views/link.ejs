@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>inshare - Downloading Link</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+      
+        <div class="sharing-container" style="display: block;">
+            <p class="expire">Link expires in 24 hrs</p>
+            <p class="text"></p>
+            <div class="input-container">
+                <input type="text" id="fileURL" readonly value="<%= url %>">
+                <img src="/img/copy-icon.svg" id="copyURLBtn" alt="copy to clipboard icon">
+            </div>
+            <p class="email-info">Or Send via Email</p>
+            <div class="email-container">
+                <form id="emailForm" action="/api/files/send" method="post">
+                    <p style="color: red  ; display: none;" class="error">All fields are required</p>
+                    <div class="filed">
+                        <label for="toEmail">Receiver's email</label>
+                        <input type="text" name="uuid"  required  id="toEmail" value="<%= uuid %>" readonly>
+                    </div>
+                    <div class="filed">
+                        <label for="fromEmail">Your email</label>
+                        <input type="email" name="emailfrom" required autocomplete="email"   id="fromEmail">
+                    </div>
+
+                    <div class="filed">
+                        <label for="toEmail">Receiver's email</label>
+                        <input type="email" name="emailto" required  autocomplete="receiver"  id="toEmail">
+                    </div>
+                    <div class="send-btn-container">
+                        <button type="submit" onclick="error()">Send</button>
+                    </div>
+                </form>
+            </div>
+            <div class="toast">Sample message</div>
+<script src="/js/link.js"></script>
+<script>
+    function error(){
+
+        const toemail = document.querySelector("#toEmail")
+        const fromemail = document.querySelector("#fromEmail")
+        const error = document.querySelector(".error")
+        if(toemail.value==="" || fromemail.value===""){
+           error.style.display="block"
+        }
+    }
+</script>
+</body>
+</html>
