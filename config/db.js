@@ -1,6 +1,6 @@
 function mongooseconn (){
    const mongoose = require("mongoose");
-   mongoose.connect("mongodb://localhost:27017/signupdata",{
+   mongoose.connect(process.env.Mongo_url,{
     useNewUrlParser:true,
     useNewUrlParser: true,
     useUnifiedTopology: true,

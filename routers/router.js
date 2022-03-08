@@ -47,7 +47,7 @@ app.post("/files", (req,res)=>{
               size: req.file.size,
           }); 
           const response = await file.save();
-          const downlaodurl = `http://${req.headers.host}/files/${response.uuid}`
+          const downlaodurl = `https://${req.headers.host}/files/${response.uuid}`
           let eventemitter = req.app.get("eventEmitter")
           eventemitter.emit("url",downlaodurl)
           console.log(req.headers.host)
