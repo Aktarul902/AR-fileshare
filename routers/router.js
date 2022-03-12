@@ -5,6 +5,7 @@ function router(app){
  const flash = require("express-flash")
  const session = require("express-session")
  const MongoDbStore = require("connect-mongo")(session)
+ const fs = require("fs");
     const {v4:uuid4} = require("uuid")
     let storage = multer.diskStorage({
         destination:(req,file,cb)=>{
@@ -33,7 +34,6 @@ app.post("/files", (req,res)=>{
         console.log(req.file)
         console.log(upload)
         if(!req.file){
-
             console.log(req.file)
             console.log("error")
         }
@@ -47,9 +47,9 @@ app.post("/files", (req,res)=>{
               size: req.file.size,
           }); 
           const response = await file.save();
-          const downlaodurl = `https://${req.headers.host}/files/${response.uuid}`
-          let eventemitter = req.app.get("eventEmitter")
-          eventemitter.emit("url",downlaodurl)
+          const downlaodurl = `${process.env.APP_BASE_URL}/files/${response.uuid}`
+      
+
           console.log(req.headers.host)
         
        return res.render("link",{
@@ -79,6 +79,13 @@ app.get("/files/download/:uuid",async(req,res)=>{
       }
       let filepath = `${__dirname}/../${file.pathname}`
       res.download(filepath)
+      fs.unlink(`../uploads/${file.filename}`,(err)=>{
+          if(!err){
+              console.log("file deleted")
+
+          }
+    })
+    const delfile = await File.findByIdAndDelete({_id:file._id})
 })
 app.post("/api/files/send",async(req,res)=>{
     const {uuid,emailfrom,emailto}= req.body
